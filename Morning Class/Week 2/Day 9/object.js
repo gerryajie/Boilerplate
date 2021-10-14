@@ -32,11 +32,15 @@ for (const property in people) {
 }
 console.log(newPeople);
 
+/* ... */
 let person = { name: 'Falah' };
 person = {
   address: 'Jakarta',
   age: 10,
   ...person,
 };
-
 console.log(person);
+
+let students = ['Dhea', 'Falah', 'Hardi'];
+students = ['Fajar', ...students, 'Umam'];
+console.log(students);
