@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { promises } = require('stream');
 
 let urlPosts = 'https://jsonplaceholder.typicode.com/posts';
 let urlUsers = 'https://jsonplaceholder.typicode.com/users';
