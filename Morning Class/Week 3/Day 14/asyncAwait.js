@@ -16,11 +16,11 @@ const fetchApi = async () => {
       axios.get(urlAlbums),
     ]);
 
-    data = {
-      posts: responsePosts.data.filter((item) => item.userId === 5),
-      users: responseUsers.data,
-      albums: responseAlbums.data,
-    };
+    // data = {
+    //   posts: responsePosts.data.filter((item) => item.userId === 5),
+    //   users: responseUsers.data,
+    //   albums: responseAlbums.data,
+    // };
 
     data = {
       posts: response[0].data.filter((item) => item.userId === 5),
