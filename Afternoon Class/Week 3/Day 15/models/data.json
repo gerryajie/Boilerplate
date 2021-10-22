@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Nushair Falah Izzatty",
+    "nickName": "Falah",
+    "city": "Jakarta"
+  },
+  {
+    "id": 2,
+    "name": "Khairul Umam",
+    "nickName": "Umam",
+    "city": "Medan"
+  },
+  {
+    "id": 3,
+    "name": "Fajar Kresna Pahlawan",
+    "nickName": "Fajar",
+    "city": "Batang"
+  }
+]
