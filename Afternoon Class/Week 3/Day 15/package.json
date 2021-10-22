@@ -1,7 +1,7 @@
 {
   "name": "day-15",
   "version": "1.0.0",
-  "description": "My first API",
+  "description": "This is my first API",
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon index",
