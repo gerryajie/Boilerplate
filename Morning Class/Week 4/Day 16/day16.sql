@@ -102,4 +102,4 @@ JOIN transactions t ON t.id_customer=c.id
 GROUP BY t.id_customer 
 
 SELECT * FROM transactions t, customers c 
-ORDER BY t.id
+ORDER BY t.id 
