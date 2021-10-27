@@ -4,10 +4,12 @@ class Transaction {
   // All Transactions
   async getAllTransactions(req, res, next) {
     try {
+      // Find all transaction data and order by id transactions
       const data = await query(
         'SELECT t.id, g.name as goodName, s.name as goodSupplier, g.price, c.name as customerName, t.time, t.quantity, t.total FROM transactions t JOIN customers c ON t.id_customer=c.id JOIN goods g ON g.id=t.id_good JOIN suppliers s ON g.id_supplier=s.id ORDER BY t.id'
       );
 
+      // If data is empty array
       if (data.length === 0) {
         return res.status(404).json({ errors: ['Transactions not found'] });
       }
@@ -21,11 +23,13 @@ class Transaction {
   // Get Detail
   async getOneTransaction(req, res, next) {
     try {
+      // Find spesific transaction by req.params.id
       const data = await query(
         'SELECT t.id, g.name as goodName, s.name as goodSupplier, g.price, c.name as customerName, t.time, t.quantity, t.total FROM transactions t JOIN customers c ON t.id_customer=c.id JOIN goods g ON g.id=t.id_good JOIN suppliers s ON g.id_supplier=s.id WHERE t.id=?',
         [req.params.id]
       );
 
+      // If data is empty array
       if (data.length === 0) {
         return res.status(404).json({ errors: ['Transaction not found'] });
       }
