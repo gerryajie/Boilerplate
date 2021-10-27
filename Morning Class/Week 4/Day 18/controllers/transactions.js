@@ -27,7 +27,7 @@ class Transaction {
       );
 
       if (data.length === 0) {
-        return res.status(404).json({ errors: ['Transactions not found'] });
+        return res.status(404).json({ errors: ['Transaction not found'] });
       }
 
       res.status(200).json({ data });
