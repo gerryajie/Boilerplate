@@ -3,10 +3,10 @@ const { promisify } = require('util');
 
 // Make connection to mysql
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'gabatch15.coynohz9l3ig.ap-southeast-1.rds.amazonaws.com',
   user: 'root',
-  password: null,
-  database: 'sales',
+  password: 'Aneh1234',
+  database: 'salesReza',
 });
 
 exports.query = promisify(connection.query).bind(connection);

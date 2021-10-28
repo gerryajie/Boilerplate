@@ -112,6 +112,61 @@ class Transaction {
       res.status(500).json({ errors: ['Internal Server Error'] });
     }
   }
+
+  async updateTransaction(req, res, next) {
+    try {
+      // Find good and price
+      const goods = await query('SELECT * FROM goods WHERE id=?', [
+        req.body.id_good,
+      ]);
+      const price = goods[0].price;
+      const total = parseFloat(price) * parseFloat(req.body.quantity);
+
+      // Update Data
+      const updatedData = await query(
+        'UPDATE transactions SET id_good=?, id_customer=?, quantity=?, total=? WHERE id=?',
+        [
+          req.body.id_good,
+          req.body.id_customer,
+          req.body.quantity,
+          total,
+          req.params.id,
+        ]
+      );
+
+      if (updatedData.affectedRows === 0) {
+        return res.status(404).json({ errors: ['Transaction not found'] });
+      }
+
+      // Find updated data
+      const data = await query(
+        'SELECT t.id, g.name as goodName, s.name as goodSupplier, g.price, c.name as customerName, t.time, t.quantity, t.total FROM transactions t JOIN customers c ON t.id_customer=c.id JOIN goods g ON g.id=t.id_good JOIN suppliers s ON g.id_supplier=s.id WHERE t.id=?',
+        [req.params.id]
+      );
+
+      res.status(200).json({ data });
+    } catch (error) {
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
+
+  async deleteTransaction(req, res, next) {
+    try {
+      const deletedData = await query('DELETE FROM transactions WHERE id=?', [
+        req.params.id,
+      ]);
+
+      if (deletedData.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ errors: ['Transaction not found or it is not exists'] });
+      }
+
+      res.status(200).json({ data: {} });
+    } catch (error) {
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
 }
 
 module.exports = new Transaction();
