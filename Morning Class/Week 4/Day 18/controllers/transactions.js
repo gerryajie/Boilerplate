@@ -118,7 +118,7 @@ class Transaction {
       const total = parseFloat(price) * parseFloat(req.body.quantity);
 
       // Update transaction data
-      await query(
+      const updatedData = await query(
         'UPDATE transactions SET id_good=?, id_customer=?, quantity=?, total=? WHERE id=?',
         [
           req.body.id_good,
@@ -128,6 +128,12 @@ class Transaction {
           req.params.id,
         ]
       );
+
+      if (updatedData.affectedRows === 0) {
+        return res.status(404).json({
+          errors: ['Transaction not found'],
+        });
+      }
 
       // Find updated Data
       const data = await query(
