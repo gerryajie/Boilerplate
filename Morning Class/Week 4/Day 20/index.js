@@ -2,6 +2,7 @@ const express = require('express'); // Import express
 const fileUpload = require('express-fileupload');
 
 // Import routes
+const goods = require('./routes/goods');
 const transactions = require('./routes/transactions');
 
 const port = process.env.PORT || 3000; // Define port
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 // Make routes
+app.use('/goods', goods);
 app.use('/transactions', transactions);
 
 // Run the server

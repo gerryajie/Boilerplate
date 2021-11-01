@@ -1,16 +1,32 @@
-const express = require('express'); // Import express
+const express = require('express');
 
-// Import validator
+// Import validators
 const {
-  createTransactionValidator,
+  createOrUpdateTransactionValidator,
 } = require('../middlewares/validators/transactions');
 
 // Import controllers
-const { createTransaction } = require('../controllers/transactions');
+const {
+  getAllTransactions,
+  createTransaction,
+  getDetailTransaction,
+  deleteTransaction,
+  updateTransaction,
+} = require('../controllers/transactions');
 
-const router = express.Router(); // Make router
+const router = express.Router();
 
-/* Routes */
-router.post('/', createTransactionValidator, createTransaction);
+// It will find route that has / first after that it will find is it GET or POST
+router
+  .route('/')
+  .get(getAllTransactions)
+  .post(createOrUpdateTransactionValidator, createTransaction);
 
-module.exports = router; // Export router
+// It will find route that has /:id first after that it will find is it GET or PUT or DELETE
+router
+  .route('/:id')
+  .get(getDetailTransaction)
+  .put(createOrUpdateTransactionValidator, updateTransaction)
+  .delete(deleteTransaction);
+
+module.exports = router;

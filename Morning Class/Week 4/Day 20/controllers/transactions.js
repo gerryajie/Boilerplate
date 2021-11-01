@@ -1,18 +1,89 @@
-const { transaction, customer, good, supplier } = require('../models');
+const { transaction, good, supplier, customer } = require('../models');
 
-class Transaction {
+class Transactions {
+  // Get all transaction data
+  async getAllTransactions(req, res, next) {
+    try {
+      let data = await transaction.findAll({
+        // find all data of transaction table
+        attributes: { exclude: ['id_good', 'id_customer'] },
+        include: [
+          // Include is join
+          {
+            model: customer,
+          },
+          {
+            model: good,
+            include: [
+              // Include is join
+              { model: supplier },
+            ],
+          },
+        ],
+      });
+
+      // If data is nothing
+      if (data.length === 0) {
+        return res.status(404).json({ errors: ['Transactions not found'] });
+      }
+
+      // If success
+      res.status(200).json({ data });
+    } catch (e) {
+      // If error
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
+
+  async getDetailTransaction(req, res, next) {
+    try {
+      let data = await transaction.findOne({
+        // find all data of transaction table
+        where: { id: req.params.id },
+        attributes: { exclude: ['id_good', 'id_customer'] },
+        include: [
+          // Include is join
+          {
+            model: customer,
+          },
+          {
+            model: good,
+            include: [
+              // Include is join
+              { model: supplier },
+            ],
+          },
+        ],
+      });
+
+      // If data is nothing
+      if (!data) {
+        return res.status(404).json({ errors: ['Transaction not found'] });
+      }
+
+      // If success
+      res.status(200).json({ data });
+    } catch (e) {
+      // If error
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
+
   async createTransaction(req, res, next) {
     try {
-      // Create data
-      // req.body = { id_customer, id_good, quantity, total }, it will be geteing values from client and from validator
-      const createdData = await transaction.create(req.body);
+      // create transaction
+      const newData = await transaction.create(req.body);
 
-      // Find new data by createdData
+      // Find transaction with join
       const data = await transaction.findOne({
-        where: { id: createdData.id },
-        // Include is join
+        where: {
+          id: newData.id,
+        },
+        attributes: { exclude: ['id_good', 'id_customer'] },
         include: [
-          { model: customer },
+          {
+            model: customer,
+          },
           {
             model: good,
             include: [
@@ -29,6 +100,69 @@ class Transaction {
       res.status(500).json({ errors: ['Internal Server Error'] });
     }
   }
+
+  // Update data
+  async updateTransaction(req, res, next) {
+    try {
+      // transaction table update data
+      const updatedData = await transaction.update(req.body, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // If no data updated
+      if (updatedData[0] === 0) {
+        return res.status(404).json({ errors: ['Transaction not found'] });
+      }
+
+      // Find the updated transaction
+      const data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: { exclude: ['id_good', 'id_customer'] },
+        include: [
+          {
+            model: customer,
+          },
+          {
+            model: good,
+            include: [
+              {
+                model: supplier,
+              },
+            ],
+          },
+        ],
+      });
+
+      // If success
+      res.status(201).json({ data });
+    } catch (e) {
+      // If error
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
+
+  // Delete Data
+  async deleteTransaction(req, res, next) {
+    try {
+      // Delete data
+      let data = await transaction.destroy({ where: { id: req.params.id } });
+
+      // If data deleted is null
+      if (!data) {
+        return res.status(404).json({ errors: ['Transaction not found'] });
+      }
+
+      // If success
+      res.status(200).json({ message: 'Success delete transaction' });
+    } catch (e) {
+      // If error
+      res.status(500).json({ errors: ['Internal Server Error'] });
+    }
+  }
 }
 
-module.exports = new Transaction();
+module.exports = new Transactions();
