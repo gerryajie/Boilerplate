@@ -1,18 +1,30 @@
-const express = require('express'); // Import express
+const express = require('express');
 
 // Import validator
 const {
   createOrUpdateTransactionValidator,
+  getDetailValidator,
 } = require('../middlewares/validators/transactions');
 
 // Import controller
-const { createTransaction } = require('../controllers/transactions');
+const {
+  createTransaction,
+  getAllTransactions,
+  getDetailTransaction,
+  updateTransaction,
+  deleteTransaction,
+} = require('../controllers/transactions');
 
 // Make router
 const router = express.Router();
 
-// Routes
+// Make some routes
 router.post('/', createOrUpdateTransactionValidator, createTransaction);
+router.get('/', getAllTransactions);
 
-// Exports router
+router.get('/:id', getDetailValidator, getDetailTransaction);
+router.put('/:id', createOrUpdateTransactionValidator, updateTransaction);
+router.delete('/:id', deleteTransaction);
+
+// Exports
 module.exports = router;

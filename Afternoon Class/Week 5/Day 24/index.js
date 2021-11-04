@@ -31,7 +31,7 @@ app.use('/transactions', transactions);
 
 // If routes not exists
 app.all('*', (req, res, next) => {
-  next({ statusCode: 404, message: 'Endpoint is not found' });
+  next({ statusCode: 404, message: 'Endpoint not found' });
 });
 
 // Enable errorHandler
