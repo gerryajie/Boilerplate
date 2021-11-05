@@ -19,6 +19,7 @@ const transactionSchema = new mongoose.Schema(
     total: {
       type: Number,
       required: true,
+      get: getTotal,
     },
   },
   {
@@ -27,8 +28,24 @@ const transactionSchema = new mongoose.Schema(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
+    toJSON: { getters: true },
   }
 );
+
+function getTotal(total) {
+  let string = total.toString().split('').reverse();
+  let result = [];
+
+  string.map((item, i) => {
+    if (i % 3 === 0 && i !== 0) {
+      result.push('.');
+    }
+    result.push(item);
+  });
+  result.reverse();
+
+  return `Rp ${result.join('')},00`;
+}
 
 // Enable soft delete
 transactionSchema.plugin(mongooseDelete, { overrideMethods: 'all' });
