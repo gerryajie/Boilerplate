@@ -5,7 +5,7 @@ const { good, customer } = require('../../models');
 exports.getDetailValidator = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return next({ message: 'id is not valid', statusCode: 400 });
+      return next({ message: 'ID is not valid', statusCode: 400 });
     }
 
     next();
@@ -20,11 +20,11 @@ exports.createOrUpdateTransactionValidator = async (req, res, next) => {
     const errors = [];
 
     // Validate every input from user
-    if (!mongoose.Schema.Types.ObjectId.isValid(req.body.id_customer)) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.id_customer)) {
       errors.push(`ID Customer is not valid`);
     }
 
-    if (!mongoose.Schema.Types.ObjectId.isValid(req.body.id_good)) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.id_good)) {
       errors.push(`ID Good is not valid`);
     }
 
@@ -53,6 +53,6 @@ exports.createOrUpdateTransactionValidator = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(error);
+    next(error); // { message: "asdasdasd" }
   }
 };

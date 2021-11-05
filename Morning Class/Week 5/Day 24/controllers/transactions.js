@@ -3,8 +3,22 @@ const { transaction, supplier } = require('../models');
 class Transaction {
   async getAllTransactions(req, res, next) {
     try {
+      // filtering
+      let filter = {};
+      if (req.query.minTotal) {
+        filter.total = { $gte: parseInt(req.query.minTotal) };
+      }
+      if (req.query.maxTotal) {
+        filter.total = { ...filter.total, $lte: parseInt(req.query.maxTotal) };
+      }
+      if (req.query.goodName) {
+        filter['good.name'] = { $regex: req.query.goodName, $options: 'i' };
+      }
+
+      console.log(filter);
+
       // Find all transactions
-      let data = await transaction.find().populate({ path: 'customer' });
+      let data = await transaction.find(filter).populate({ path: 'customer' });
 
       if (data.length === 0) {
         return next({ message: 'Transactions not found', statusCode: 404 });

@@ -15,10 +15,12 @@ const transactionSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: true,
+      get: getQuantity,
     },
     total: {
       type: Number,
       required: true,
+      get: getTotal,
     },
   },
   {
@@ -30,6 +32,15 @@ const transactionSchema = new mongoose.Schema(
     toJSON: { getters: true }, // Enable getter
   }
 );
+
+function getQuantity(quantity) {
+  // return 'Falah';
+  return `${quantity} items`;
+}
+
+function getTotal(total) {
+  return `Rp. ${total}`;
+}
 
 // Enable soft delete
 transactionSchema.plugin(mongooseDelete, { overrideMethods: 'all' });

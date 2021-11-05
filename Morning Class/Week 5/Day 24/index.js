@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 /* Make public folder for static file such as images, videos, documents and so on. */
-app.use(express.static('public'));
+app.use(express.static('public')); // You can access with GET in public folder
 
 // Make routes
 app.use('/transactions', transactions);
