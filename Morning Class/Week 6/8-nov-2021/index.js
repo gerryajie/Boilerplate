@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(route);
-// app.use(errorHandler);
 app.listen(port, () => {
   console.log(`Example app  222 listening at http://localhost:${port}`);
 });
