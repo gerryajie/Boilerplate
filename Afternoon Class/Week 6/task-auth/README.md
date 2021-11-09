@@ -1,0 +1,1 @@
+silahkan buat folder dengan nama folder nickname kalian masing-masing, lalu push jawaban kalian di dalam folder kalian masing-masing. Contoh: aku bikin folder "fadhlan", lalu jawabanku, aku push di dalem folder "fadhlan" tersebut. Good Luck!
