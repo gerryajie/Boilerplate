@@ -1,17 +1,25 @@
 const route = require("express").Router();
+const passport = require("passport")
+const { Users, Picture } = require("../controller/index")
+const authentication = require("../middleware/authentication")
+const authorization = require("../middleware/_authorization")
+const auth = require("../middleware/auth")
 
-const { Users } = require("../controller/index") // Memanggil class dari Controller
-const authentication = require("../middleware/authentication") // mengambil fungsi middleware authnetikasi
-
-// route yang tidak menggunkan middleware authentikasi
 route.post("/login", Users.login)
 route.post("/user", Users.createUser)
+// route.use(passport.initialize())
 
-route.use(authentication) // Penggunaan authentikasi
+// route.use(authentication)
 
-//Route yang menggukana middleware authentikasi
-route.get("/user", Users.getUsers)
+route.get("/user", auth.authentication, Users.getUsers)
 route.get("/user/:id", Users.getUser)
+
+route.post("/picture", Picture.postPicture)
+
+route.delete("/picture/:id", authorization, Picture.deletePicture)
+route.put("/picture/:id", authorization, Picture.editPicture)
+route.get("/picture/:id", authorization, Picture.getPicture)
+route.get("/picture", Picture.getPictures)
 
 
 

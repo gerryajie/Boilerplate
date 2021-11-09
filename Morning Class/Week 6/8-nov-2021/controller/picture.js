@@ -5,6 +5,17 @@ class Pictures {
   static async postPicture(req, res, next) {
     try {
       const loginUserPayload = req.loginUser
+      /**
+       * req.body = {
+       *  caption : "user",
+       *  url : "url"
+       * }
+       * 
+       * const url = req.body.url
+       * const caption = req.body.caption
+       * 
+       * const { url, caption } = req.body
+       */
       const { caption, url } = req.body
       const newPicture = await Picture.create({ caption, url, userId: loginUserPayload.id })
       res.status(200).json({
