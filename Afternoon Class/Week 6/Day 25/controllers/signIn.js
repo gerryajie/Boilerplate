@@ -1,5 +1,6 @@
 const { User } = require("../models")
 const encryption = require("../helpers/encryption")
+const { generateToken, decodeToken } = require("../helpers/jwt");
 
 class SignInController {
   static async signIn(req, res, next) {
@@ -18,7 +19,22 @@ class SignInController {
       return res.status(401).json({ statusCode: 401, message: "email/password invalid" });
     }
 
-    return res.status(200).json({ statusCode: 200, message: "login success" });
+    console.log(user.id)
+    console.log(user.email)
+    console.log(user.firstName)
+    console.log(user.lastName)
+    console.log(user.companyId)
+
+    const { id, firstName, lastName, companyId } = user;
+
+    const payload = {
+      id, email, firstName, lastName, companyId
+    }
+    
+    console.log("🚀 ~ file: signIn.js ~ line 31 ~ SignInController ~ signIn ~ payload", payload)
+    const token = generateToken(payload);
+
+    return res.status(200).json({ statusCode: 200, message: "login success", token });
   }
 }
 
