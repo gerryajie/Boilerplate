@@ -3,15 +3,15 @@ const passport = require("passport")
 const { Users, Picture } = require("../controller/index")
 const authentication = require("../middleware/authentication")
 const authorization = require("../middleware/_authorization")
-const auth = require("../middleware/auth")
+// const auth = require("../middleware/auth")
 
 route.post("/login", Users.login)
 route.post("/user", Users.createUser)
 // route.use(passport.initialize())
 
-// route.use(authentication)
+route.use(authentication)
 
-route.get("/user", auth.authentication, Users.getUsers)
+route.get("/user", Users.getUsers)
 route.get("/user/:id", Users.getUser)
 
 route.post("/picture", Picture.postPicture)
