@@ -1,15 +1,17 @@
 const { User } = require("../models")
-const { createToken } = require("../utils/jwt")
+const { createToken, encodePin } = require("../utils")
 
 class Users {
 
   static async createUser(req, res, next) {
     try {
       const { name, email, password } = req.body
+      const hashPassword = encodePin(password)
+
       const newUser = await User.create({
         name,
         email,
-        password
+        password: hashPassword
       })
 
       res.status(200).json({
