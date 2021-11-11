@@ -50,8 +50,8 @@ class Pictures {
   }
   static async getPictures(req, res, next) {
     try {
-      const page = +req.query.page || 1 // mendapatkan data dari query string dengan default value = 1
-      const limit = Number(req.query.limit) || 10 // mendapatkan data dari query string dengan default value = 10
+      const page = +req.query.page  // mendapatkan data dari query string dengan default value = 1
+      const limit = Number(req.query.limit)  // mendapatkan data dari query string dengan default value = 10
       const startIndex = (page - 1) * limit // Index awal data yang di inginkan
       const endIndex = page * limit // Index akhir data yang di inginkan
       const userId = req.loginUser.id // dapat user Id dari payload yang didapatkan dari token 
@@ -96,7 +96,7 @@ class Pictures {
       const pictureData = pictures.map(el => {
         return el.dataValues // mengembalikan dataValues dari setiap element
       })
-      const result = pictureData.slice(startIndex, endIndex) // Mengambil data sesuai dengan index yang di inginkan 
+      const result = page && limit ? pictureData.slice(startIndex, endIndex) : pictureData // Mengambil data sesuai dengan index yang di inginkan 
 
       res.status(200).json({
         status: 200,
