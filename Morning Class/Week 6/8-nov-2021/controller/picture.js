@@ -50,10 +50,6 @@ class Pictures {
   }
   static async getPictures(req, res, next) {
     try {
-      const page = +req.query.page  // mendapatkan data dari query string dengan default value = 1
-      const limit = Number(req.query.limit)  // mendapatkan data dari query string dengan default value = 10
-      const startIndex = (page - 1) * limit // Index awal data yang di inginkan
-      const endIndex = page * limit // Index akhir data yang di inginkan
       const userId = req.loginUser.id // dapat user Id dari payload yang didapatkan dari token 
       const pictures = await Picture.findAll({
         where: {
@@ -62,41 +58,18 @@ class Pictures {
         order: [["id", "ASC"]]
       })
 
-      /**
-       * data dari pictures berbentuk array of object yang memiliki key  data values
-       *   Picture {
-    dataValues: {
-      id: 9,
-      caption: 'semangat Juga',
-      url: 'url://hafis 2',
-      userId: 1,
-      createdAt: 2021-11-11T02:36:41.755Z,
-      updatedAt: 2021-11-11T02:36:41.755Z
-    },
-    _previousDataValues: {
-      id: 9,
-      caption: 'semangat Juga',
-      url: 'url://hafis 2',
-      userId: 1,
-      createdAt: 2021-11-11T02:36:41.755Z,
-      updatedAt: 2021-11-11T02:36:41.755Z
-    },
-    _changed: Set(0) {},
-    _options: {
-      isNewRecord: false,
-      _schema: null,
-      _schemaDelimiter: '',
-      raw: true,
-      attributes: [Array]
-    },
-    isNewRecord: false
-]
-      dari contoh data di atas kita butuhkan cuman dataValues maka kita jalankan fungsi map dari pictures dan hanya mengambil data values dari setiap item
-       */
-      const pictureData = pictures.map(el => {
-        return el.dataValues // mengembalikan dataValues dari setiap element
-      })
-      const result = page && limit ? pictureData.slice(startIndex, endIndex) : pictureData // Mengambil data sesuai dengan index yang di inginkan 
+      let page = +req.query.page  // mendapatkan data dari query string dengan default value = 1
+      let limit = Number(req.query.limit)  // mendapatkan data dari query string dengan default value = 10
+      if ((pictures.length > 6) && (!limit && !page)) {
+        limit = 3
+        page = 1
+      }
+
+      const startIndex = (page - 1) * limit // Index awal data yang di inginkan
+      const endIndex = page * limit // Index akhir data yang di inginkan
+
+      const result = pictures.slice(startIndex, endIndex)
+      // const result = page && limit ? pictureData.slice(startIndex, endIndex) : pictureData // Mengambil data sesuai dengan index yang di inginkan 
 
       res.status(200).json({
         status: 200,
