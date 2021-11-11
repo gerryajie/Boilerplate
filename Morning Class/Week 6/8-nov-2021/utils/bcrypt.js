@@ -9,12 +9,12 @@ const encodePin = (plain) => {
   }
 };
 
-const decodePin = (plain, hash) => {
+const compare = (plain, hash) => {
   return bcrypt.compareSync(plain, hash);
 };
 
 
 module.exports = {
   encodePin,
-  decodePin,
+  compare,
 };

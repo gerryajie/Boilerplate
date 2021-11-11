@@ -1,5 +1,5 @@
 const { User } = require("../models")
-const { createToken, encodePin } = require("../utils")
+const { createToken, encodePin, compare } = require("../utils")
 
 class Users {
 
@@ -52,11 +52,29 @@ class Users {
   static async login(req, res, next) {
     try {
       const email = req.body.email
+      const password = req.body.password
       const user = await User.findOne({
         where: {
           email
         }
       })
+
+      console.log(password, "<<<< PASS")
+
+      const hashPass = user.dataValues.password
+
+      console.log(hashPass, " <<< HASH")
+      const compareResult = compare(password, hashPass)
+      console.log(compareResult, "<<<< RESULT")
+      if (!compareResult) {
+        res.status(401).json({
+          status: 401,
+          msg: "Masukkan Email dan Password yang benar"
+        })
+        return
+      }
+
+
       if (!user) {
         res.status(401).json({
           status: 401,

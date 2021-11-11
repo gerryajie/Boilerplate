@@ -1,9 +1,9 @@
 const { createToken, verifyToken } = require("./jwt")
-const { encodePin, decodePin } = require("./bcrypt")
+const { encodePin, compare } = require("./bcrypt")
 
 
 module.exports = {
-  decodePin,
+  compare,
   encodePin,
   createToken,
   verifyToken
