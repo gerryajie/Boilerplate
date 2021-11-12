@@ -18,8 +18,8 @@ class Pictures {
        * 
        * const { url, caption } = req.body
        */
-      const { caption, url } = req.body
-      const newPicture = await Picture.create({ caption, url, userId: loginUserPayload.id })
+      const { caption, url, like } = req.body
+      const newPicture = await Picture.create({ caption, url, userId: loginUserPayload.id, like })
       res.status(200).json({
         status: 200,
         data: newPicture,
