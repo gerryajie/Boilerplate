@@ -13,8 +13,6 @@ const authentication = async (req, res, next) => {
           email
         }
       })
-      console.log("======= User =======")
-      console.log(user)
       if (user) {
         req.loginUser = payload
         next()

@@ -1,4 +1,5 @@
-const { Picture } = require("../models")
+const { Picture, sequelize } = require("../models")
+// const { Op } = require('sequelize');
 
 
 class Pictures {
@@ -6,7 +7,6 @@ class Pictures {
     try {
 
       const loginUserPayload = req.loginUser
-      console.log(loginUserPayload, "<<<<<< LOGIN ")
       /**
        * req.body = {
        *  caption : "user",
@@ -51,12 +51,34 @@ class Pictures {
   static async getPictures(req, res, next) {
     try {
       const userId = req.loginUser.id // dapat user Id dari payload yang didapatkan dari token 
-      const pictures = await Picture.findAll({
-        where: {
-          userId
-        },
-        order: [["id", "ASC"]]
-      })
+      const order = req.query.order ? req.query.order : 'DESC';
+      let date = req.query.date
+
+      let query = `SELECT id, caption, url, "userId", "createdAt", "updatedAt", "like"
+      FROM public."Pictures"
+      where "userId" = ${userId}`
+
+      if (date) {
+        date = date.split("-")
+        query += ` and ("createdAt" < '${date[0]}-${date[1]}-${date[2]} 23:59:59' and "createdAt" > '${date[0]}-${date[1]}-${date[2]} 00:00:00')`
+      }
+
+      query += `order by "createdAt" ${order}`
+      console.log(query)
+      let pictures = await sequelize.query(query)
+      pictures = pictures[0]
+      console.log(pictures, "<<<")
+      // const pictures = await Picture.findAll({
+      //   where: {
+      //     userId,
+
+      //     createdAt: {
+      //       // [Op.gt]: TODAY_START,
+      //       [Op.between]: [moment().utcOffset("+07.00").format('YYYY-MM-DD HH:mm')]
+      //     }
+      //   },
+      //   order: [["createdAt", order]]
+      // });
 
       let page = +req.query.page  // mendapatkan data dari query string dengan default value = 1
       let limit = Number(req.query.limit)  // mendapatkan data dari query string dengan default value = 10
@@ -68,8 +90,9 @@ class Pictures {
       const startIndex = (page - 1) * limit // Index awal data yang di inginkan
       const endIndex = page * limit // Index akhir data yang di inginkan
 
-      const result = pictures.slice(startIndex, endIndex)
-      // const result = page && limit ? pictureData.slice(startIndex, endIndex) : pictureData // Mengambil data sesuai dengan index yang di inginkan 
+      // const result = pictures.slice(startIndex, endIndex)
+
+      const result = page && limit ? pictures.slice(startIndex, endIndex) : pictures // Mengambil data sesuai dengan index yang di inginkan 
 
       res.status(200).json({
         status: 200,
