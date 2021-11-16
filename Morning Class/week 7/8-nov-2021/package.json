@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit"
+    "test": "jest --testTimeout=100000 --coverage --forceExit --verbose"
   },
   "jest": {
     "testEnvironment": "node",

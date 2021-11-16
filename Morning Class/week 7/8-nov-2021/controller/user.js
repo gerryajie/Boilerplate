@@ -14,7 +14,7 @@ class Users {
         password: hashPassword
       })
 
-      res.status(200).json({
+      res.status(201).json({
         status: 200,
         data: newUser
       })
