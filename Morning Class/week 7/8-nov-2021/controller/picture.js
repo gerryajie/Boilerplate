@@ -52,11 +52,6 @@ class Pictures {
   static async getPictures(req, res, next) {
     try {
       const userId = req.loginUser.id // dapat user Id dari payload yang didapatkan dari token 
-      const page = req.query.page
-      const limit = req.query.limit
-
-
-
       const pictures = await Picture.findAll({
         where: {
           userId,
