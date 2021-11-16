@@ -7,13 +7,11 @@ const { encodePin } = require('../utils')
 const hashedPass = encodePin('123456')
 console.log(hashedPass, "<<<<< HASHED")
 
-beforeAll(async (done) => {
-  done()
+beforeAll(async () => {
 })
 
-afterAll(async (done) => {
+afterAll(async () => {
   await queryInterface.bulkDelete("Users");
-  done()
 })
 
 describe('Create User', () => {
