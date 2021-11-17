@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "DOTENV=development node index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server",
+    "test": "jest --testTimeout=100000 --coverage --forceExit --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -22,5 +28,9 @@
     "passport-local": "^1.0.0",
     "pg": "^8.7.1",
     "sequelize": "^6.9.0"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "supertest": "^6.1.6"
   }
 }
