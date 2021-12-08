@@ -4,6 +4,9 @@
 // ini setup buka koneksi socket di server
 // const http = require("http");
 // const server = http.createServer(app);
+
+const { instrument } = require("@socket.io/admin-ui");
+
 const io = require("socket.io")(3000, {
   cors: {
     origin: ["http://localhost:8080"],
@@ -15,6 +18,10 @@ const io = require("socket.io")(3000, {
 //     origin: ["http://localhost:8081"],
 //   },
 // });
+
+instrument(io, {
+  auth: false,
+});
 
 io.on("connection", (socket) => {
   console.log(`a user connected ${socket.id}`);
