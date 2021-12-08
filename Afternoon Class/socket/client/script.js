@@ -39,6 +39,11 @@ form.addEventListener("submit", (event) => {
 
 joinRoomButton.addEventListener("click", (event) => {
   const room = roomInput.value;
+
+  // join room socket
+  socket.emit("join-room", room, (notifJoinedRoom) => {
+    displayMessage(notifJoinedRoom);
+  });
 });
 
 function displayMessage(message) {

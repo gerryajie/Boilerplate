@@ -31,6 +31,13 @@ io.on("connection", (socket) => {
       socket.to(room).emit("receive-message", message);
     }
   });
+
+  // listener join-room
+  socket.on("join-room", (room, cb) => {
+    console.log("room joined", room);
+    socket.join(room);
+    cb(`joined room: ${room}`);
+  });
 });
 
 // app.get("/", function (req, res) {
