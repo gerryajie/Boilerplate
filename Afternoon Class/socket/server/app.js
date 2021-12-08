@@ -23,6 +23,15 @@ instrument(io, {
   auth: false,
 });
 
+// open namespace localhost:3000/user
+// io.of("/user").on("connection")
+const userIo = io.of("/user");
+// handling connection yg ke localhost:3000/user
+userIo.on("connection", (socket) => {
+  console.log("connected to user namespace", socket.id);
+});
+
+// namespace localhost:3000
 io.on("connection", (socket) => {
   console.log(`a user connected ${socket.id}`);
   socket.on("custom-event", (number, string, obj) => {
