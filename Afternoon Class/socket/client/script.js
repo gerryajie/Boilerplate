@@ -9,6 +9,12 @@ const form = document.getElementById("form");
 const socket = io("http://localhost:3000");
 console.log("🚀 ~ file: script.js ~ line 9 ~ socket", socket);
 
+// socket.emit("custom-event", 10, "Hi", { a: "a" });
+
+socket.on("connect", () => {
+  displayMessage(`You connected with id: ${socket.id}`);
+});
+
 socket.on("receive-message", (payload) => {
   console.log("nerima payload", payload);
   displayMessage(payload);
@@ -17,14 +23,14 @@ socket.on("receive-message", (payload) => {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const message = messageInput.value;
-  const room = roomInput.value;
+  const channel = roomInput.value;
 
   if (message === "") {
     return;
   }
 
   //disini ngetrigger event "send-message"
-  socket.emit("send-message", message);
+  socket.emit("send-message", message, channel);
 
   displayMessage(message);
 

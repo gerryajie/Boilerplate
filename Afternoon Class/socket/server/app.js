@@ -6,7 +6,7 @@
 // const server = http.createServer(app);
 const io = require("socket.io")(3000, {
   cors: {
-    origin: ["http://localhost:8081"],
+    origin: ["http://localhost:8080"],
   },
 });
 // const { Server } = require("socket.io");
@@ -18,11 +18,18 @@ const io = require("socket.io")(3000, {
 
 io.on("connection", (socket) => {
   console.log(`a user connected ${socket.id}`);
+  socket.on("custom-event", (number, string, obj) => {
+    console.log(number, string, obj);
+  });
 
-  socket.on("send-message", (payload) => {
-    console.log("payload", payload);
-
-    socket.broadcast.emit("receive-message", payload);
+  socket.on("send-message", (message, room) => {
+    console.log("message, ", message);
+    if (room === "") {
+      // io.emit("receive-message", message, );
+      socket.broadcast.emit("receive-message", message);
+    } else {
+      socket.to(room).emit("receive-message", message);
+    }
   });
 });
 
