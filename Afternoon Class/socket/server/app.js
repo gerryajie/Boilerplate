@@ -4,6 +4,11 @@
 // ini setup buka koneksi socket di server
 // const http = require("http");
 // const server = http.createServer(app);
+var jwt = require("jsonwebtoken");
+
+function decodeJwt(token) {
+  return jwt.decode(token);
+}
 
 const { instrument } = require("@socket.io/admin-ui");
 
@@ -29,6 +34,28 @@ const userIo = io.of("/user");
 // handling connection yg ke localhost:3000/user
 userIo.on("connection", (socket) => {
   console.log("connected to user namespace", socket.id);
+  console.log(
+    "connected to user namespace: " + JSON.stringify(socket.userData)
+  );
+});
+
+userIo.use((socket, next) => {
+  // if (isValid(socket.request)) {
+  //   next();
+  // } else {
+  //   next(new Error("invalid"));
+  // }
+
+  if (socket.handshake.auth.token) {
+    let token = socket.handshake.auth.token;
+    let decodeToken = decodeJwt(token);
+    socket.userData = decodeToken;
+    next();
+  } else {
+    next(new Error("Please send token"));
+    // umpamanya
+    // io.emit("connect-error", "Please send token")
+  }
 });
 
 // namespace localhost:3000
