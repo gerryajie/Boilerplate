@@ -5,7 +5,8 @@ class Users {
 
   static async createUser(req, res, next) {
     try {
-      const { name, email, password } = req.body
+      const { name, email, password, confirmPassword } = req.body
+
       const hashPassword = encodePin(password)
 
       const newUser = await User.create({
