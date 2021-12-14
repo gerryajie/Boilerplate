@@ -16,5 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+  // User.beforeCreate(async (user, option) => {
+  //   console.log(user, "<<<< USER")
+  //   console.log(option, "<<<< OPTION")
+  // })
   return User;
 };
