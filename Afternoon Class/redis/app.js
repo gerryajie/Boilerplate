@@ -2,8 +2,8 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const Redis = require("redis");
+redisClient = Redis.createClient();
 function setup() {
-  redisClient = Redis.createClient();
   console.log("🚀 ~ file: app.js ~ line 7 ~ setup ~ redisClient", redisClient);
 
   redisClient.on("error", function (error) {
@@ -22,7 +22,7 @@ function setup() {
 const DEFAULT_EXPIRATION = 3600;
 
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.port || 3001;
 app.use(cors());
 
 setup();
